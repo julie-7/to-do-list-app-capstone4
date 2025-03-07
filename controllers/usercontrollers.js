@@ -7,7 +7,7 @@ dotenv.config();
 export const registeruser = async (req, res) => {
     const { name, email, password } = req.body;
     try {
-        const sql = 'Insert into users (name,email,password) values($1,$2,$3) Returning *'
+        const sql = 'Insert into user_project (name,email,password) values($1,$2,$3) Returning *'
         const user = await db.one(sql, [name, email, password]);
         res.status(200).json(user);
     } catch (error) {
@@ -19,11 +19,11 @@ export const registeruser = async (req, res) => {
 export const loginuser = async (req, res) =>{
     const { email, password } = req.body;
     try {
-        const user = await db.oneOrNone('SELECT * FROM user  email = $1 and password = $2', [email, password]);
+        const user = await db.oneOrNone('SELECT * FROM user_project  where email = $1 and password = $2', [email, password]);
         if (!user) {
             return res.status(401).json({ error: 'invalid credentials' });
         }
-        const token = jwt.sign({ userID: user.email }, process.env.JWT_SECRET,{ expiresin:'1h'});
+        const token = jwt.sign({ userID: user.email }, process.env.JWT_SECRET,{ expiresIn:'1h'});
         res.json({ token });
     } catch (error) {
         const err = error.message
