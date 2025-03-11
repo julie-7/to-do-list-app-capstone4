@@ -19,11 +19,12 @@ const tokenValidation = (req, res, next) => {
     }
     const token = authorization.replace('Bearer ', '').trim();
     try {
-        const secret = process.env.KEY_SECRET;
+        const secret = process.env.JWT_SECRET;
         jwt.verify(token, secret);
         next();
     } catch (err) {
-        return res.status(400).json({ message: "Invalid Token" });
+        const error =  err.message
+        return res.status(400).json({ message: "Invalid Token", error: error });
     }
 
 };
