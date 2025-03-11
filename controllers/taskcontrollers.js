@@ -5,10 +5,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const posttask = async (req, res) => {
-    const { id, title, description, status, due_date, email } = req.body;
+    const {  title, description, status, due_date, email } = req.body;
     try {
-        const sql = 'Insert into task (id,title,description,status,due_date,email) values($1,$2,$3,$4,$5,$6) Returning *'
-        const task = await db.query(sql, [id, title, description, status, due_date, email]);
+        const sql = 'Insert into task (title,description,status,due_date,email) values($1,$2,$3,$4,$5) Returning *'
+        const task = await db.query(sql, [ title, description, status, due_date, email]);
         res.status(200).json(task);
     } catch (error) {
         const err = error.message;
