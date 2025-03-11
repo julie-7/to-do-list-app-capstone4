@@ -12,10 +12,7 @@ app.use(express.json());
 app.use('/api/users',user);
 app.use('/api/tasks',task);
 
-const PORT = process.env.PORT;
-app.listen(PORT, ()=>console.log(`Server running on port ${PORT}`));
-
-const tokenValidation = (req,res,next) => {
+    const tokenValidation = (req,res,next) => {
     const authorization = req.headers['authorization'];
     if(!authorization){
         return res.status(400).json({message:"you need to pass a token"});
@@ -30,3 +27,6 @@ try{
 }
 
 };
+app.use('api/task',tokenValidation,task);
+const PORT = process.env.PORT;
+app.listen(PORT, ()=> console.log(`Server running on port ${PORT}`));
