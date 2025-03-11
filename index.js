@@ -17,7 +17,7 @@ const tokenValidation = (req, res, next) => {
     if (!authorization) {
         return res.status(400).json({ message: "you need to pass a token" });
     }
-    const token = authorization.replace('Bearer', '').trim();
+    const token = authorization.replace('Bearer ', '').trim();
     try {
         const secret = process.env.KEY_SECRET;
         jwt.verify(token, secret);
@@ -30,3 +30,12 @@ const tokenValidation = (req, res, next) => {
 app.use('/api/tasks', tokenValidation, task);
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+/*
+
+1) Create a User 
+2) Log in 
+3) Save the token 
+4) Create a task, but provide the token
+
+*/
